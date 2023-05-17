@@ -39,7 +39,7 @@ class test_utils_get_config(TestCase):
     def test_load_config(self):
         config_path = "SciXPipelineUtils/tests/stubdata/"
         config_dict = {
-            "PROJ_HOME": "/Users/sao/ADS_repos/backoffice/SciXPipelines/SciXPipelineUtils/SciXPipelineUtils/tests/stubdata",
+            "PROJ_HOME": os.path.abspath(config_path),
             "AWS_ACCESS_KEY_ID": "CHANGEME",
             "AWS_BUCKET_ARN": "BUCKETARN",
             "AWS_BUCKET_NAME": "BUCKETNAME",
@@ -76,7 +76,7 @@ class test_utils_get_config(TestCase):
         os.environ["AWS_ACCESS_KEY_ID"] = "new_key"
         config_path = "SciXPipelineUtils/tests/stubdata/"
         config_dict = {
-            "PROJ_HOME": "/Users/sao/ADS_repos/backoffice/SciXPipelines/SciXPipelineUtils/SciXPipelineUtils/tests/stubdata",
+            "PROJ_HOME": os.path.abspath(config_path),
             "AWS_ACCESS_KEY_ID": "CHANGEME",
             "AWS_BUCKET_ARN": "BUCKETARN",
             "AWS_BUCKET_NAME": "BUCKETNAME",
@@ -112,7 +112,7 @@ class test_utils_get_config(TestCase):
 
         os.environ["S3_PROVIDERS"] = '{"Provider_1": "AWS"}'
         config_dict = {
-            "PROJ_HOME": "/Users/sao/ADS_repos/backoffice/SciXPipelines/SciXPipelineUtils/SciXPipelineUtils/tests/stubdata",
+            "PROJ_HOME": os.path.abspath(config_path),
             "AWS_ACCESS_KEY_ID": "CHANGEME",
             "AWS_BUCKET_ARN": "BUCKETARN",
             "AWS_BUCKET_NAME": "BUCKETNAME",
