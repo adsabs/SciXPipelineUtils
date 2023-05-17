@@ -5,7 +5,6 @@ import boto3
 import moto
 import pytest
 from botocore.exceptions import ParamValidationError
-
 from s3_methods import load_s3
 
 

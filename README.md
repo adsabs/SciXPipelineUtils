@@ -13,4 +13,4 @@ pre-commit install --hook-type commit-msg
 
 ## Maintainers
 
-First Last
+Taylor Jacovich
