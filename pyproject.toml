@@ -49,7 +49,7 @@ dev = [
 addopts = "--cov=SciXPipelineUtils/ --cov-report=term-missing"
 cache_dir = ".tmp/"
 testpaths = [
-    "SciXPipelineUtils/tests",
+    "SciXPipelineUtils/tests/",
 ]
 pythonpath = [
     "SciXPipelineUtils/",
@@ -58,7 +58,7 @@ pythonpath = [
 [tool.coverage.run]
 data_file = "SciXPipelineUtils/.coverage"
 omit = [
-    "SciXPipelineUtils/tests/"
+    "SciXPipelineUtils/tests/",
 ]
 
 [tool.coverage.report]
