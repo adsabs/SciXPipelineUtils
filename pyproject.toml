@@ -1,0 +1,84 @@
+[project]
+name = "SciXPipelineUtils"
+version = "0.0.1"
+description = "A collection of utilities for the new NASA Science Explorer (NASA SciX) backoffice architecture"
+authors = [{ name = "Taylor Jacovich", email = "tjacovich@cfa.harvard.edu"}]
+license = { text = "GPL-3.0" }
+readme = "README.md"
+#repository = "https://github.com/tjacovich/SciXPipelineUtils"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+]
+
+packages = [
+    "SciXPipelineUtils",
+]
+
+dependencies = [
+    'boto3==1.26.59',
+    'confluent-kafka==1.9.2',
+    'fastavro==1.7.2',
+    'avro==1.11.1',
+]
+
+[project.urls]
+Source = "https://github.com/tjacovich/SciXPipelineUtils"
+
+[project.optional-dependencies]
+dev = [
+    'black==22.3.0',
+    'flake8==4.0.1',
+    'isort==5.12.0',
+    'pytest==7.3.1',
+    'pyupgrade==2.29.1',
+    'pytest-mock==3.6.1',
+    'pre-commit==2.16.0',
+    'coveralls==3.3.1',
+    'mock==4.0.3',
+    'coverage==6.2',
+    'pytest-cov==4.0.0',
+    'moto==4.1.3',
+
+]
+
+[tool.pytest.ini_options]
+addopts = "--cov=SciXPipelineUtils/ --cov-report=term-missing"
+cache_dir = ".tmp/"
+testpaths = [
+    "SciXPipelineUtils/tests",
+]
+pythonpath = [
+    "SciXPipelineUtils/",
+]
+
+[tool.coverage.run]
+data_file = "SciXPipelineUtils/.coverage"
+
+[tool.coverage.report]
+skip_empty = true
+#skip_covered = true
+
+[tool.isort]
+profile = "black"
+known_first_party = ["SciXPipelineUtils", "tests",]
+
+[tool.black]
+line-length = 99 # override black's default line-length
+
+[build-system]
+requires = ["setuptools==60.10.0", "wheel", "flit_core >=3.2,<4", "ppsetuptools==2.0.2"]
+build-backend = "flit_core.buildapi"
+#build-backend = "setuptools.build_meta"
+
+# see setup.py for explanation of these
+[xsetup.entry_points]
+console_scripts = [
+    "adsingestp=adsingestp.cli:cli",
+]
+[xsetup]
+scripts = [
+]
