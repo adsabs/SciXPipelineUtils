@@ -58,7 +58,7 @@ pythonpath = [
 [tool.coverage.run]
 data_file = "SciXPipelineUtils/.coverage"
 omit = [
-    "tests/"
+    "SciXPipelineUtils/tests/"
 ]
 
 [tool.coverage.report]
