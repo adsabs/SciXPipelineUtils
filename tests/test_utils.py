@@ -6,7 +6,7 @@ import pytest
 from confluent_kafka.schema_registry import Schema
 from utils import get_schema, load_config
 
-from SciXPipelineUtils.tests.mockschemaregistryclient import MockSchemaRegistryClient
+from mockschemaregistryclient import MockSchemaRegistryClient
 
 
 class Logging:
