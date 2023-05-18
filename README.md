@@ -1,4 +1,4 @@
-[![Python CI actions](https://github.com/tjacovich/SciXPipelineUtils/actions/workflows/python_actions.yml/badge.svg)](https://github.com/tjacovich/SciXPipelineUtils/actions/workflows/python_actions.yml) [![Coverage Status](https://coveralls.io/repos/github/tjacovich/SciXPipelineUtils/badge.svg?branch=main)](https://coveralls.io/github/tjacovich/SciXPipelineUtils?branch=main)
+[![Python CI actions](https://github.com/adsabs/SciXPipelineUtils/actions/workflows/python_actions.yml/badge.svg)](https://github.com/adsabs/SciXPipelineUtils/actions/workflows/python_actions.yml) [![Coverage Status](https://coveralls.io/repos/github/adsabs/SciXPipelineUtils/badge.svg?branch=main)](https://coveralls.io/github/adsabs/SciXPipelineUtils?branch=main)
 
 # Installation and Usage
 
@@ -7,9 +7,9 @@ Any release can be installed and used by running one of the following:
 
 ```bash
 #Pull a specific release
-pip install git+https://github.com/tjacovich/SciXPipelineUtils.git@vX.Y.Z
+pip install git+https://github.com/adsabs/SciXPipelineUtils.git@vX.Y.Z
 #Install branch
-pip install git+https://github.com/tjacovich/SciXPipelineUtils.git@$BRANCH_NAME
+pip install git+https://github.com/adsabs/SciXPipelineUtils.git@$BRANCH_NAME
 ```
 
 ## Usage
