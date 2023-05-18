@@ -4,9 +4,8 @@ from unittest import TestCase
 
 import pytest
 from confluent_kafka.schema_registry import Schema
-from utils import get_schema, load_config
-
 from mockschemaregistryclient import MockSchemaRegistryClient
+from utils import get_schema, load_config
 
 
 class Logging:
