@@ -2,7 +2,7 @@
 
 # Installation and Usage
 
-## Installing in a python environment 
+## Installing in a python environment
 Any release can be installed and used by running one of the following:
 
 ```bash
