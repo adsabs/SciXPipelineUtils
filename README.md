@@ -1,12 +1,26 @@
 [![Python CI actions](https://github.com/tjacovich/SciXPipelineUtils/actions/workflows/python_actions.yml/badge.svg)](https://github.com/tjacovich/SciXPipelineUtils/actions/workflows/python_actions.yml) [![Coverage Status](https://coveralls.io/repos/github/tjacovich/SciXPipelineUtils/badge.svg?branch=main)](https://coveralls.io/github/tjacovich/SciXPipelineUtils?branch=main)
 
 # Installation and Usage
+
+## Installing in a python environment 
 Any release can be installed and used by running one of the following:
+
 ```bash
 #Pull a specific release
 pip install git+https://github.com/tjacovich/SciXPipelineUtils.git@vX.Y.Z
 #Install branch
 pip install git+https://github.com/tjacovich/SciXPipelineUtils.git@$BRANCH_NAME
+```
+
+## Usage
+The `SciXPipelineUtils` package currently provides the following modules
+```python
+#Methods for interacting with S3 providers
+SciXPipelineUtils.s3_methods
+#Methods for loading configuration files and schemas
+SciXPipelineUtils.utils
+#Methods for Serializing and Deserializing AVRO messages using a specified schema
+SciXPipelineUtils.avro_serializer
 ```
 
 # Setting Up a Development Environment
