@@ -4,9 +4,8 @@ from unittest import TestCase
 
 import pytest
 from confluent_kafka.schema_registry import Schema
+from mockschemaregistryclient import MockSchemaRegistryClient
 from utils import get_schema, load_config
-
-from SciXPipelineUtils.tests.mockschemaregistryclient import MockSchemaRegistryClient
 
 
 class Logging:
@@ -18,9 +17,7 @@ class test_utils_get_schema(TestCase):
     def test_get_schema(self):
         logger = Logging(logging)
         schema_client = MockSchemaRegistryClient()
-        VALUE_SCHEMA_FILE = (
-            "SciXPipelineUtils/tests/stubdata/AVRO_schemas/TEMPLATEInputSchema.avsc"
-        )
+        VALUE_SCHEMA_FILE = "tests/stubdata/AVRO_schemas/TEMPLATEInputSchema.avsc"
         VALUE_SCHEMA_NAME = "TEMPLATEInputSchema"
         value_schema = open(VALUE_SCHEMA_FILE).read()
 
@@ -37,7 +34,7 @@ class test_utils_get_schema(TestCase):
 
 class test_utils_get_config(TestCase):
     def test_load_config(self):
-        config_path = "SciXPipelineUtils/tests/stubdata/"
+        config_path = "tests/stubdata/"
         config_dict = {
             "PROJ_HOME": os.path.abspath(config_path),
             "AWS_ACCESS_KEY_ID": "CHANGEME",
@@ -68,13 +65,13 @@ class test_utils_get_config(TestCase):
         self.assertEqual(config_dict, config)
 
     def test_load_config_path_does_not_exist(self):
-        config_path = "SciXPipelineUtils/tests/stubdata/fake/"
+        config_path = "tests/stubdata/fake/"
         with pytest.raises(Exception):
             load_config(config_path)
 
     def test_load_config_from_env_vars(self):
         os.environ["AWS_ACCESS_KEY_ID"] = "new_key"
-        config_path = "SciXPipelineUtils/tests/stubdata/"
+        config_path = "tests/stubdata/"
         config_dict = {
             "PROJ_HOME": os.path.abspath(config_path),
             "AWS_ACCESS_KEY_ID": "CHANGEME",
