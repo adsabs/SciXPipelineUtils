@@ -1,4 +1,5 @@
 import io
+
 import avro.io
 import avro.schema
 from avro.schema import parse
