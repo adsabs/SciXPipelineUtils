@@ -1,11 +1,13 @@
 import os
-from unittest.mock import patch
 from unittest import TestCase
+from unittest.mock import patch
+
 import boto3
 import moto
 import pytest
-from botocore.exceptions import ParamValidationError, ClientError
+from botocore.exceptions import ClientError, ParamValidationError
 from s3_methods import load_s3_providers
+
 
 @pytest.fixture
 def empty_bucket():
@@ -21,6 +23,7 @@ def empty_bucket():
     finally:
         moto_fake.stop()
 
+
 @pytest.mark.usefixtures("empty_bucket")
 class TestS3(TestCase):
     def test_upload_download_object(self):
@@ -33,11 +36,15 @@ class TestS3(TestCase):
         object_name = "/test_object/name"
         expected_etag = '"ec378b33e587b0f84760abe5c596a4b7"'
         for producer in buckets:
-            etag = buckets[producer].write_object_s3(file_bytes=file_bytes, object_name=object_name)
+            etag = buckets[producer].write_object_s3(
+                file_bytes=file_bytes, object_name=object_name
+            )
             self.assertEqual(expected_etag, etag)
-        
+
         for producer in buckets:
-            self.assertEqual(file_bytes.decode('UTF-8'), buckets[producer].read_object_s3(object_name))
+            self.assertEqual(
+                file_bytes.decode("UTF-8"), buckets[producer].read_object_s3(object_name)
+            )
 
     def test_upload_download_nonbytes_object(self):
         """
@@ -53,7 +60,6 @@ class TestS3(TestCase):
 
         with pytest.raises(ClientError):
             buckets[producer].read_object_s3(object_name)
-
 
     @moto.mock_s3
     def test_alternate_s3_endpoint_put_object(self):
@@ -79,5 +85,7 @@ class TestS3(TestCase):
                 expected_etag = '"ec378b33e587b0f84760abe5c596a4b7"'
 
                 for producer in buckets:
-                    etag = buckets[producer].write_object_s3(file_bytes=file_bytes, object_name=object_name)
+                    etag = buckets[producer].write_object_s3(
+                        file_bytes=file_bytes, object_name=object_name
+                    )
                     self.assertEqual(expected_etag, etag)

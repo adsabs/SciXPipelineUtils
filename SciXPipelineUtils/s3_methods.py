@@ -1,6 +1,6 @@
+import io
 import logging
 
-import io
 import boto3
 from botocore.exceptions import ClientError, ParamValidationError
 
@@ -44,7 +44,7 @@ class S3Provider:
             with io.BytesIO() as s3_obj:
                 self.bucket.download_fileobj(object_name, s3_obj)
                 s3_obj.seek(0)
-                s3_file = s3_obj.read().decode('UTF-8')
+                s3_file = s3_obj.read().decode("UTF-8")
         except (ClientError, ParamValidationError) as e:
             logging.exception(e)
             raise e
