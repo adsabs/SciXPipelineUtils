@@ -1,25 +1,11 @@
+import io
 import logging
 
 import boto3
 from botocore.exceptions import ClientError, ParamValidationError
 
 
-class s3_methods:
-    """
-    Base class for interacting with S3 providers
-    """
-
-    def write_object_s3(self, file_bytes, object_name):
-        try:
-            response = self.bucket.put_object(Body=file_bytes, Key=object_name)
-            logging.info(response)
-        except (ClientError, ParamValidationError) as e:
-            logging.exception(e)
-            raise e
-        return response.e_tag
-
-
-class s3_provider(s3_methods):
+class S3Provider:
     """
     Class for interacting with a particular S3 provider
     """
@@ -44,33 +30,40 @@ class s3_provider(s3_methods):
             )
             self.bucket = self.s3.Bucket(config.get(str(provider) + "_BUCKET_NAME"))
 
+    def write_object_s3(self, file_bytes, object_name):
+        try:
+            response = self.bucket.put_object(Body=file_bytes, Key=object_name)
+            logging.info(response)
+        except (ClientError, ParamValidationError) as e:
+            logging.exception(e)
+            raise e
+        return response.e_tag
 
-class load_s3:
+    def read_object_s3(self, object_name):
+        try:
+            with io.BytesIO() as s3_obj:
+                self.bucket.download_fileobj(object_name, s3_obj)
+                s3_obj.seek(0)
+                s3_file = s3_obj.read().decode("UTF-8")
+        except (ClientError, ParamValidationError) as e:
+            logging.exception(e)
+            raise e
+        return s3_file
+
+
+def load_s3_providers(config):
     """
-    A wrapper class to load multiple S3 providers
+    Loops over all providers specified in config and returns them as a dict
+
+    input:
+
+    config: The imported Pipeline configuration
+
+    return:
+
+    provider_dict: a dictionary with entries of the form "PROVIDER_NAME": class s3_provider
     """
-
-    def __init__(self, config):
-        """
-        input:
-
-        config: The imported Pipeline configuration
-        """
-        self.s3Clients = self.load_s3_providers(config)
-
-    def load_s3_providers(self, config):
-        """
-        Loops over all providers specified in config and returns them as a dict
-
-        input:
-
-        config: The imported Pipeline configuration
-
-        return:
-
-        provider_dict: a dictionary with entries of the form "PROVIDER_NAME": class s3_provider
-        """
-        provider_dict = {}
-        for provider in config.get("S3_PROVIDERS", ["AWS"]):
-            provider_dict[provider] = s3_provider(provider, config)
-        return provider_dict
+    provider_dict = {}
+    for provider in config.get("S3_PROVIDERS", ["AWS"]):
+        provider_dict[provider] = S3Provider(provider, config)
+    return provider_dict
