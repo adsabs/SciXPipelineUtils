@@ -13,9 +13,10 @@ class AvroSerialHelper:
         """
         self.ser_schema = parse(ser_schema)
         self.des_schema = parse(ser_schema)
-        
-        if des_schema: self.des_schema = parse(des_schema)
-        
+
+        if des_schema:
+            self.des_schema = parse(des_schema)
+
         self.logger = logger
 
     def avro_serializer(self, msg):

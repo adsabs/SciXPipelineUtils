@@ -1,9 +1,9 @@
+import datetime
 import json
 from unittest import TestCase
 
 import avro
 import avro_serializer
-import datetime
 import pytest
 
 
@@ -28,12 +28,12 @@ class mock_gRPC_avro_msg:
             "record_sring": "<RECORD>",
             "s3_path": "pathfortesting",
             "task": "SYMBOL1",
-            "datetime": datetime.datetime(1000, 1, 1, 0, 0, 0, 000000, tzinfo=avro.timezones.utc)
+            "datetime": datetime.datetime(1000, 1, 1, 0, 0, 0, 000000, tzinfo=avro.timezones.utc),
         }
 
     def bitstream(self):
         return b"\x00Ng425897fh3qp35890u54256342ewferht242546\x02\x00\x00\x00\x02\x10metadata\x02\x142023-03-07\x02"
-    
+
     def resp_bitstream(self):
         return b"\x00Hf5d9d314-67f3-4f9d-9c24-d46ab314f783\x00\x10<RECORD>\x00\x1cpathfortesting\x00\xff\xaf\xb9\xf8\xdf\xf5\r"
 
@@ -78,7 +78,9 @@ class TestAvroSerializer(TestCase):
             res_schema_json = json.load(f)
 
         msg = mock_gRPC_avro_msg().value()
-        serializer = avro_serializer.AvroSerialHelper(ser_schema=json.dumps(req_schema_json), des_schema=json.dumps(res_schema_json))
+        serializer = avro_serializer.AvroSerialHelper(
+            ser_schema=json.dumps(req_schema_json), des_schema=json.dumps(res_schema_json)
+        )
         bitstream = serializer.avro_serializer(msg)
         self.assertEqual(bitstream, mock_gRPC_avro_msg().bitstream())
 
