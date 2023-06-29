@@ -6,12 +6,17 @@ from avro.schema import parse
 
 
 class AvroSerialHelper:
-    def __init__(self, schema, logger=None):
+    def __init__(self, ser_schema, des_schema=None, logger=None):
         """
         :param schema: The AVRO schema (str)
         :param logger: Application logger
         """
-        self.schema = parse(schema)
+        self.ser_schema = parse(ser_schema)
+        self.des_schema = parse(ser_schema)
+
+        if des_schema:
+            self.des_schema = parse(des_schema)
+
         self.logger = logger
 
     def avro_serializer(self, msg):
@@ -19,7 +24,7 @@ class AvroSerialHelper:
         :param msg: the json representation of the AVRO message
         :return: serialized message (bitstream)
         """
-        writer = avro.io.DatumWriter(self.schema)
+        writer = avro.io.DatumWriter(self.ser_schema)
         bytes_writer = io.BytesIO()
         encoder = avro.io.BinaryEncoder(bytes_writer)
         try:
@@ -39,7 +44,7 @@ class AvroSerialHelper:
             self.logger.debug(raw_bytes)
         bytes_reader = io.BytesIO(raw_bytes)
         decoder = avro.io.BinaryDecoder(bytes_reader)
-        reader = avro.io.DatumReader(self.schema)
+        reader = avro.io.DatumReader(self.des_schema)
         try:
             return reader.read(decoder)
         except Exception as e:
