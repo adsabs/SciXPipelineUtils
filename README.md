@@ -37,4 +37,4 @@ pre-commit install --hook-type commit-msg
 
 ## Maintainers
 
-Taylor Jacovich
+Taylor Jacovich and The ADS Team
