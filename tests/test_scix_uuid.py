@@ -1,6 +1,8 @@
-from unittest import TestCase
-import scix_uuid
 import uuid
+from unittest import TestCase
+
+import scix_uuid
+
 
 class TestSciXUUIDImplementation(TestCase):
     def generate_uuid7(self):
