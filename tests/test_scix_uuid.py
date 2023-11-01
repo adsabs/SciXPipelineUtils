@@ -1,11 +1,11 @@
 import uuid
 from unittest import TestCase
 
-import scix_uuid
+from scix_uuid import scix_uuid
 
 
 class TestSciXUUIDImplementation(TestCase):
-    def generate_uuid7(self):
+    def test_generate_uuid7(self):
         test_uuid = scix_uuid.uuid7()
         self.assertEqual(type(test_uuid), uuid.UUID)
         self.assertEqual(type(test_uuid.hex), str)

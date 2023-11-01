@@ -7,6 +7,13 @@ import random
 import time
 import uuid
 
+# These are needed to keep the semi-sequential nature of the UUIDs
+sequenceCounter = 0
+_last_v7timestamp = 0
+_last_uuid_int = 0
+_last_sequence = None
+uuidVariant = "10"
+
 
 class scix_uuid:
     def uuid7():
@@ -16,13 +23,15 @@ class scix_uuid:
 
         format: unixts|subsec_a|version|subsec_b|variant|subsec_seq_node
 
-        :return: uuid.UUID
+        :param returnType: bin, int, hex
+        :return: bin, int, hex
         """
 
-        sequenceCounter = 0
-        _last_v7timestamp = 0
-        uuidVariant = "10"
-
+        global _last_v7timestamp
+        global _last_uuid_int
+        global _last_sequence
+        global sequenceCounter
+        global uuidVariant
         uuidVersion = "0111"  # ver 7
         sec_bits = 36  # unixts at second precision
         subsec_bits = 30  # Enough to represent NS
@@ -70,6 +79,7 @@ class scix_uuid:
 
         # Set these two before moving on
         _last_v7timestamp = timestamp
+        _last_sequence = int(sequenceCounter)
 
         ### Random Node Work
         randomInt = random.getrandbits(node_bits)
@@ -82,6 +92,8 @@ class scix_uuid:
         # Bin merge and Int creation
         UUIDv7_bin = unixts + subsec_a + uuidVersion + subsec_b + uuidVariant + subsec_seq_node
         UUIDv7_int = int(UUIDv7_bin, 2)
+
+        _last_uuid_int = UUIDv7_int
 
         # Convert Hex to Int then splice in dashes
         UUIDv7_hex = f"{UUIDv7_int:032x}"  # int to hex
@@ -97,9 +109,12 @@ class scix_uuid:
 
         return uuid.UUID(UUIDv7_formatted)
 
+
 """
-This loops through all the uuid attributes and adds them to the scix_uuid class so they are accessible
-and scix_uuid can be treated as a drop-in replacement for uuid.
+Added so that we can treat scix_uuid as an approximate replacement for the uuid module
+noting that it is now technically a class but does not need to be instantiated to operate.
+This is done because flake8 and PEP8 strongly discourage using import *
 """
+
 for i in dir(uuid):
     setattr(scix_uuid, i, getattr(uuid, i))
