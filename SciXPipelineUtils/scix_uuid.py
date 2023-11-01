@@ -97,6 +97,9 @@ class scix_uuid:
 
         return uuid.UUID(UUIDv7_formatted)
 
-
+"""
+This loops through all the uuid attributes and adds them to the scix_uuid class so they are accessible
+and scix_uuid can be treated as a drop-in replacement for uuid.
+"""
 for i in dir(uuid):
     setattr(scix_uuid, i, getattr(uuid, i))
