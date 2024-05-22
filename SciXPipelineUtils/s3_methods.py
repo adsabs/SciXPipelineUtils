@@ -18,9 +18,9 @@ class S3Provider:
         config: The imported Pipeline configuration
         """
         if provider == "AWS":
-        #     self.s3 = boto3.resource("s3")
-        #     self.bucket = self.s3.Bucket(config.get("AWS_BUCKET_NAME"))
-        # else:
+            self.s3 = boto3.resource("s3")
+            self.bucket = self.s3.Bucket(config.get("AWS_BUCKET_NAME"))
+        else:
             self.s3 = boto3.resource(
                 "s3",
                 endpoint_url=config.get(str(provider) + "_S3_URL"),
