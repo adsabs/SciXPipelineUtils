@@ -56,7 +56,7 @@ base = len(symbols)
 check_base = len(symbols + check_symbols)
 
 
-def encode(number, checksum=False, split=0):
+def encode(number, checksum=False, split=0, string_length=8):
     """Encode an integer into a symbol string.
 
     A ValueError is raised on invalid input.
@@ -66,6 +66,11 @@ def encode(number, checksum=False, split=0):
 
     If split is specified, the string will be divided into
     clusters of that size separated by hyphens.
+
+    The param string_length causes the returned value to be padded 
+    with 0s if the returned string is shorter than the requested 
+    length (ie. 01 becomes 00000001 for the default string length). 
+    This includes the checksum if specified.
 
     The encoded string is returned.
     """
@@ -82,20 +87,23 @@ def encode(number, checksum=False, split=0):
         check_symbol = encode_symbols[number % check_base]
 
     if number == 0:
-        return '0' + check_symbol
+        symbol_string = '0'
 
     symbol_string = ''
     while number > 0:
         remainder = number % base
         number //= base
         symbol_string = encode_symbols[remainder] + symbol_string
-    symbol_string = symbol_string + check_symbol
+
+    symbol_string = str(symbol_string).zfill(string_length-int(checksum))
 
     if split:
         chunks = []
         for pos in range(0, len(symbol_string), split):
             chunks.append(symbol_string[pos:pos + split])
         symbol_string = '-'.join(chunks)
+        symbol_string = symbol_string + check_symbol
+
 
     return symbol_string
 
