@@ -25,18 +25,8 @@ within the string.
 """
 
 import re
-import sys
-
-PY3 = sys.version_info[0] == 3
-
-if not PY3:
-    import string as str
-
 
 __all__ = ["encode", "decode", "normalize"]
-
-
-string_types = (str,)
 
 # The encoded symbol space does not include I, L, O or U
 symbols = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
@@ -155,14 +145,6 @@ def normalize(symbol_string, strict=False):
 
     The normalized string is returned.
     """
-    if isinstance(symbol_string, string_types):
-        if not PY3:
-            try:
-                symbol_string = symbol_string.encode("ascii")
-            except UnicodeEncodeError:
-                raise ValueError("string should only contain ASCII characters")
-    else:
-        raise TypeError("string is of invalid type %s" % symbol_string.__class__.__name__)
 
     norm_string = symbol_string.replace("-", "").translate(normalize_symbols).upper()
 
