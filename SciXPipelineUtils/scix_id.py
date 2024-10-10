@@ -42,7 +42,7 @@ base = len(symbols)
 check_base = len(symbols + check_symbols)
 
 
-def encode(number, checksum=False, split=0, string_length=8):
+def encode(number, checksum=True, split=4, string_length=12):
     """Encode an integer into a symbol string.
 
     A ValueError is raised on invalid input.
