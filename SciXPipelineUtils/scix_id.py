@@ -93,7 +93,7 @@ def encode(number, checksum=True, split=4, string_length=12):
     return symbol_string
 
 
-def decode(symbol_string, checksum=False, strict=False):
+def decode(symbol_string, checksum=True, strict=False):
     """Decode an encoded symbol string.
 
     If checksum is set to True, the string is assumed to have a
