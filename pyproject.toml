@@ -1,6 +1,6 @@
 [project]
 name = "SciXPipelineUtils"
-version = "0.0.2"
+version = "0.0.3"
 description = "A collection of utilities for the new NASA Science Explorer (NASA SciX) backoffice architecture"
 authors = [{ name = "Taylor Jacovich", email = "tjacovich@cfa.harvard.edu"}]
 license = { text = "GPL-3.0" }
@@ -41,7 +41,7 @@ dev = [
     'pytest-cov==4.0.0',
     'moto==4.1.3',
     'confluent-kafka==1.9.2',
-    'fastavro==1.7.2',
+    'fastavro==1.9.7',
 ]
 
 [tool.pytest.ini_options]
