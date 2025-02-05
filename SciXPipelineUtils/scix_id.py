@@ -31,7 +31,7 @@ __all__ = ["encode", "decode", "normalize"]
 # The encoded symbol space does not include I, L, O or U
 symbols = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 # These five symbols are exclusively for checksum values
-check_symbols = "*~$=U"
+check_symbols = "U"
 
 encode_symbols = dict((i, ch) for (i, ch) in enumerate(symbols + check_symbols))
 decode_symbols = dict((ch, i) for (i, ch) in enumerate(symbols + check_symbols))

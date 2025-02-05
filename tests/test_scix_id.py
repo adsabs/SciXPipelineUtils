@@ -6,7 +6,7 @@ import SciXPipelineUtils.scix_id as scixid
 class TestSciXIDImplementation(TestCase):
     def test_generate_scixid(self):
         test_id = scixid.encode(1000)
-        self.assertEqual(test_id, "0000-0000-0Z81")
+        self.assertEqual(test_id, "0000-0000-0Z8A")
         test_int = scixid.decode(test_id)
         self.assertEqual(test_int, 1000)
 
