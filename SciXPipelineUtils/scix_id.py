@@ -4,6 +4,7 @@ base32-crockford
 
 A Python module implementing the alternate base32 encoding as described
 by Douglas Crockford at: http://www.crockford.com/wrmg/base32.html.
+Adapted from https://github.com/jbittel/base32-crockford for use in SciX.
 
 He designed the encoding to:
 
@@ -30,7 +31,7 @@ __all__ = ["encode", "decode", "normalize"]
 
 # The encoded symbol space does not include I, L, O or U
 symbols = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
-# These five symbols are exclusively for checksum values
+# This one symbol is exclusively for checksum values
 check_symbols = "U"
 
 encode_symbols = dict((i, ch) for (i, ch) in enumerate(symbols + check_symbols))
