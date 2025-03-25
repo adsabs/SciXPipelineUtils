@@ -137,3 +137,5 @@ data/
 
 aws_env_vars.env
 kubernetes/
+
+scixid-testing/
