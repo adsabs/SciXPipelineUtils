@@ -5,7 +5,9 @@ from unittest import TestCase
 import pytest
 from confluent_kafka.schema_registry import Schema
 from mockschemaregistryclient import MockSchemaRegistryClient
-from utils import get_schema, load_config
+from utils import get_schema, load_config, u2asc
+
+from SciXPipelineUtils.exceptions import UnicodeHandlerError
 
 
 class Logging:
@@ -141,3 +143,17 @@ class test_utils_get_config(TestCase):
         self.assertNotEqual(config_dict, config)
         config_dict["S3_PROVIDERS"] = {"Provider_1": "AWS"}
         self.assertEqual(config_dict, config)
+
+    def test_u2asc(self):
+
+        input1 = "benìtez, n"
+        input2 = "izzet, sakallı"
+
+        output1 = u2asc(input1)
+        output2 = u2asc(input2)
+
+        self.assertEqual(output1, "benitez, n")
+        self.assertEqual(output2, "izzet, sakalli")
+
+        input3 = input2.encode("utf16")
+        self.assertRaises(UnicodeHandlerError, u2asc, input3)
