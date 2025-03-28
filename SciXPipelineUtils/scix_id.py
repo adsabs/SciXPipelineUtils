@@ -180,7 +180,20 @@ def scix_id_from_hash(hash, checksum=True, split=4, string_length=12):
 
 
 def generate_bib_data_hash(hash_data):
-    unique_fields = ["id", "aff"]
+    unique_fields = [
+        "id",
+        "aff",
+        "author",
+        "author_count",
+        "author_facet",
+        "author_norm",
+        "author_facet_hier",
+        "bibcode",
+        "database",
+        "first_author",
+        "first_author_norm",
+        "identifier",
+    ]
     for field in unique_fields:
         try:
             hash_data.pop(field)
