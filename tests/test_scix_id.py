@@ -19,41 +19,51 @@ class TestSciXIDImplementation(TestCase):
     def test_generate_bib_data_hash(self):
         test_bib_data = {
             "id": 1,
-            "authors": ["Lias, Alberta", "Smith, J."],
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": "words",
+            "bibcode": "Test",
+        }
+        hash = scixid.generate_bib_data_hash(test_bib_data)
+        self.assertEqual(hash, "ca77650a961fe043bf18e60618f43b49")
+
+        test_bib_data = {
             "title": "Test",
             "abs": "words",
         }
-        hash = scixid.generate_bib_data_hash(test_bib_data)
-        self.assertEqual(hash, "7a58d48ab6931dafc48066153eb3ef79")
+        hash2 = scixid.generate_bib_data_hash(test_bib_data)
+        self.assertEqual(hash2, "ca77650a961fe043bf18e60618f43b49")
+
+        self.assertEqual(hash, hash2)
 
     def test_get_rand_from_hash(self):
         test_bib_data = {
             "id": 1,
-            "authors": ["Lias, Alberta", "Smith, J."],
+            "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
             "abs": "words",
         }
         hash = scixid.generate_bib_data_hash(test_bib_data)
         rand_num = scixid.get_rand_from_hash(hash)
-        self.assertEqual(rand_num, 11501195142287729)
+        self.assertEqual(rand_num, 12446194448305896)
 
     def test_scix_id_from_hash(self):
         test_bib_data = {
             "id": 1,
-            "authors": ["Lias, Alberta", "Smith, J."],
+            "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
             "abs": "words",
         }
         hash = scixid.generate_bib_data_hash(test_bib_data)
         scix_id = scixid.scix_id_from_hash(hash)
-        self.assertEqual(scix_id, "A6W8-TNF5-MBHU")
+        self.assertEqual(scix_id, "B1QQ-XVEB-3Q83")
 
     def test_generate_scix_id(self):
         test_bib_data = {
             "id": 1,
-            "authors": ["Lias, Alberta", "Smith, J."],
+            "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
             "abs": "words",
         }
         scix_id = scixid.generate_scix_id(test_bib_data)
-        self.assertEqual(scix_id, "A6W8-TNF5-MBHU")
+        self.assertEqual(scix_id, "B1QQ-XVEB-3Q83")
