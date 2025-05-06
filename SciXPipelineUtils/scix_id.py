@@ -25,6 +25,9 @@ within the string.
 
 """
 
+import hashlib
+import json
+import random
 import re
 
 __all__ = ["encode", "decode", "normalize"]
@@ -57,11 +60,14 @@ def encode(number, checksum=True, split=4, string_length=12):
     The param string_length causes the returned value to be padded
     with 0s if the returned string is shorter than the requested
     length (ie. 01 becomes 00000001 for the default string length).
-    This includes the checksum if specified.
+    This includes the checksum if specified but not any hyphens from splitting.
+    This will also cause a value error to be thrown if encode cannot
+    generate a string with the requested length.
 
     The encoded string is returned.
     """
     number = int(number)
+    unencoded_number = number
     if number < 0:
         raise ValueError("number '%d' is not a positive integer" % number)
 
@@ -83,7 +89,12 @@ def encode(number, checksum=True, split=4, string_length=12):
         symbol_string = encode_symbols[remainder] + symbol_string
 
     symbol_string = str(symbol_string).zfill(string_length - int(checksum))
-
+    if len(symbol_string) != string_length - int(checksum):
+        raise ValueError(
+            "Failed to generate encode {0} to string with the requested length: {1}. Actual length is {2}".format(
+                unencoded_number, string_length - int(checksum), len(symbol_string)
+            )
+        )
     if split:
         chunks = []
         for pos in range(0, len(symbol_string), split):
@@ -156,3 +167,44 @@ def normalize(symbol_string, strict=False):
         raise ValueError("string '%s' requires normalization" % symbol_string)
 
     return norm_string
+
+
+def get_rand_from_hash(hash, min_val=1, max_val=12800000000000000):
+    random.seed(hash)
+    return random.randint(min_val, max_val)
+
+
+def scix_id_from_hash(hash, checksum=True, split=4, string_length=12):
+    rand_int = get_rand_from_hash(hash)
+    return encode(rand_int)
+
+
+def generate_bib_data_hash(hash_data):
+    unique_fields = [
+        "id",
+        "aff",
+        "author",
+        "author_count",
+        "author_facet",
+        "author_norm",
+        "author_facet_hier",
+        "bibcode",
+        "database",
+        "first_author",
+        "first_author_norm",
+        "identifier",
+    ]
+    for field in unique_fields:
+        try:
+            hash_data.pop(field)
+        except Exception:
+            continue
+    encoded_hash_data = json.dumps(hash_data).encode("utf-8")
+    return hashlib.md5(encoded_hash_data).hexdigest()
+
+
+def generate_scix_id(hash_data, checksum=True, split=4, string_length=12):
+    hashed_data = generate_bib_data_hash(hash_data)
+    return scix_id_from_hash(
+        hash=hashed_data, checksum=checksum, split=split, string_length=string_length
+    )

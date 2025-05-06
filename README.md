@@ -21,6 +21,10 @@ SciXPipelineUtils.s3_methods
 SciXPipelineUtils.utils
 #Methods for Serializing and Deserializing AVRO messages using a specified schema
 SciXPipelineUtils.avro_serializer
+#Methods for generating Canonical SciX Identifiers
+SciXPipelineUtils.scix_id
+#Class wraps uuid to provide uuid7 support.
+SciXPipelineUtils.scix_uuid
 ```
 
 # Setting Up a Development Environment
