@@ -216,6 +216,8 @@ def generate_scix_id(
     elif hash_data_type == "other":
         encoded_hash_data = str(hash_data).encode("utf-8")
         hashed_data = hashlib.md5(encoded_hash_data).hexdigest()
+    else:
+        raise ValueError("Invalid hash_data_type")
     return scix_id_from_hash(
         hash=hashed_data, checksum=checksum, split=split, string_length=string_length
     )
