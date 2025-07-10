@@ -203,8 +203,19 @@ def generate_bib_data_hash(hash_data):
     return hashlib.md5(encoded_hash_data).hexdigest()
 
 
-def generate_scix_id(hash_data, checksum=True, split=4, string_length=12):
-    hashed_data = generate_bib_data_hash(hash_data)
+def generate_scix_id(
+    hash_data, hash_data_type="bib_data", checksum=True, split=4, string_length=12
+):
+    if hash_data_type == "bib_data":
+        if type(hash_data) != dict:
+            try:
+                hash_data = json.loads(hash_data)
+            except ValueError as e:
+                raise e
+        hashed_data = generate_bib_data_hash(hash_data)
+    elif hash_data_type == "other":
+        encoded_hash_data = str(hash_data).encode("utf-8")
+        hashed_data = hashlib.md5(encoded_hash_data).hexdigest()
     return scix_id_from_hash(
         hash=hashed_data, checksum=checksum, split=split, string_length=string_length
     )
