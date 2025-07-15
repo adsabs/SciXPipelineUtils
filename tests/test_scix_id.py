@@ -1,3 +1,4 @@
+import json
 from unittest import TestCase
 
 import SciXPipelineUtils.scix_id as scixid
@@ -66,4 +67,17 @@ class TestSciXIDImplementation(TestCase):
             "abs": "words",
         }
         scix_id = scixid.generate_scix_id(test_bib_data)
+        scix_id_2 = scixid.generate_scix_id(json.dumps(test_bib_data))
         self.assertEqual(scix_id, "B1QQ-XVEB-3Q83")
+        self.assertEqual(scix_id, scix_id_2)
+
+    def test_generate_scix_id_other(self):
+        test_bib_data = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": "words",
+        }
+        scix_id = scixid.generate_scix_id(json.dumps(test_bib_data), hash_data_type="other")
+        self.assertNotEqual(scix_id, "B1QQ-XVEB-3Q83")
+        self.assertEqual(scix_id, "9G4K-K9BH-SA63")
