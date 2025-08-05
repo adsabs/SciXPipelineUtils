@@ -193,6 +193,20 @@ def generate_bib_data_hash(hash_data):
         "first_author",
         "first_author_norm",
         "identifier",
+        "orcid_pub",
+        "links_data",
+        "alternate_bibcode",
+        "doctype",
+        "doctype_facet_hier",
+        "entry_date",
+        "keyword_norm",
+        "keyword_facet",
+        "citation",
+        "citation_count",
+        "citation_count_norm",
+        "read_count",
+        "date",
+        "copyright",
     ]
     for field in unique_fields:
         try:
