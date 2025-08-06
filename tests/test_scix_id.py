@@ -71,6 +71,19 @@ class TestSciXIDImplementation(TestCase):
         self.assertEqual(scix_id, "7SNR-3N03-VSD6")
         self.assertEqual(scix_id, scix_id_2)
 
+    def test_generate_scix_id_user_fields(self):
+        test_bib_data = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words"],
+        }
+        user_fields = ["id"]
+        scix_id = scixid.generate_scix_id(test_bib_data, user_fields=user_fields)
+        scix_id_2 = scixid.generate_scix_id(test_bib_data)
+        self.assertEqual(scix_id, "1NMC-KCFG-RVH8")
+        self.assertNotEqual(scix_id, scix_id_2)
+
     def test_generate_scix_id_special_characters_true(self):
         test_bib_data = {
             "id": 1,
