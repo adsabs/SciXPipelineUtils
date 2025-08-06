@@ -227,7 +227,7 @@ def generate_scix_id(
     checksum=True,
     split=4,
     string_length=12,
-    stripped_characters=True,
+    strip_characters=True,
 ):
     if hash_data_type == "bib_data":
         if type(hash_data) != dict:
@@ -235,7 +235,7 @@ def generate_scix_id(
                 hash_data = json.loads(hash_data)
             except ValueError as e:
                 raise e
-        hashed_data = generate_bib_data_hash(hash_data, stripped_characters=stripped_characters)
+        hashed_data = generate_bib_data_hash(hash_data, strip_characters=strip_characters)
     elif hash_data_type == "other":
         encoded_hash_data = str(hash_data).encode("utf-8")
         hashed_data = hashlib.md5(encoded_hash_data).hexdigest()
