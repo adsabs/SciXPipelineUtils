@@ -217,6 +217,12 @@ def generate_bib_data_hash(hash_data, strip_characters=True):
     if strip_characters and hash_data.get("abs"):
         hash_data["abs"][0] = re.sub("<[^<]+?>", "", hash_data.get("abs")[0])
         hash_data["abs"][0] = re.sub(r"\W+", "", hash_data.get("abs")[0])
+        hash_data["abs"][0] = re.sub(
+            r"&[a-zA-Z]+;", "", hash_data.get("abs")[0]
+        )  # Remove HTML entities
+        hash_data["abs"][0] = re.sub(
+            r"[^\x00-\x7F]", "", hash_data.get("abs")[0]
+        )  # Remove special Unicode characters like Greek and math
     encoded_hash_data = json.dumps(hash_data).encode("utf-8")
     return hashlib.md5(encoded_hash_data).hexdigest()
 

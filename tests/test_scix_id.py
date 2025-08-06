@@ -83,6 +83,26 @@ class TestSciXIDImplementation(TestCase):
         self.assertEqual(scix_id, "7SNR-3N03-VSD6")
         self.assertEqual(scix_id, scix_id_2)
 
+    def test_generate_scix_id_special_characters_true_comparison(self):
+        test_bib_data = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words < <lt\\>"],
+        }
+
+        test_bib_data_2 = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words <"],
+        }
+
+        scix_id = scixid.generate_scix_id(test_bib_data)
+        scix_id_2 = scixid.generate_scix_id(test_bib_data_2)
+        self.assertEqual(scix_id, "7SNR-3N03-VSD6")
+        self.assertEqual(scix_id, scix_id_2)
+
     def test_generate_scix_id_special_characters_false(self):
         test_bib_data = {
             "id": 1,
