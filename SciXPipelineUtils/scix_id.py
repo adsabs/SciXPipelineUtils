@@ -213,8 +213,9 @@ def generate_bib_data_hash(hash_data):
             hash_data.pop(field)
         except Exception:
             continue
-        if hash_data.get("abstract"):
-            hash_data["abstract"][0] = re.sub(r"\W+", "", hash_data.get("abstract")[0])
+    if hash_data.get("abs"):
+        hash_data["abs"][0] = re.sub("<[^<]+?>", "", hash_data.get("abs")[0])
+        hash_data["abs"][0] = re.sub(r"\W+", "", hash_data.get("abs")[0])
     encoded_hash_data = json.dumps(hash_data).encode("utf-8")
     return hashlib.md5(encoded_hash_data).hexdigest()
 
