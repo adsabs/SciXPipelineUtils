@@ -93,5 +93,5 @@ class TestSciXIDImplementation(TestCase):
             "abs": ["words"],
         }
         scix_id = scixid.generate_scix_id(json.dumps(test_bib_data), hash_data_type="other")
-        self.assertNotEqual(scix_id, "880N-W2DE-VHDV")
+        self.assertNotEqual(scix_id, "7SNR-3N03-VSD6")
         self.assertEqual(scix_id, "6N22-EN04-7GHF")
