@@ -76,7 +76,7 @@ class TestSciXIDImplementation(TestCase):
             "id": 1,
             "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
-            "abs": ["words<<lt\\>"],
+            "abs": ["words < <lt\\>"],
         }
         # import pudb
         # pudb.set_trace()
