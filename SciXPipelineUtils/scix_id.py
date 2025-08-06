@@ -179,7 +179,7 @@ def scix_id_from_hash(hash, checksum=True, split=4, string_length=12):
     return encode(rand_int)
 
 
-def generate_bib_data_hash(hash_data):
+def generate_bib_data_hash(hash_data, strip_characters=True):
     unique_fields = [
         "id",
         "aff",
@@ -213,7 +213,8 @@ def generate_bib_data_hash(hash_data):
             hash_data.pop(field)
         except Exception:
             continue
-    if hash_data.get("abs"):
+
+    if strip_characters and hash_data.get("abs"):
         hash_data["abs"][0] = re.sub("<[^<]+?>", "", hash_data.get("abs")[0])
         hash_data["abs"][0] = re.sub(r"\W+", "", hash_data.get("abs")[0])
     encoded_hash_data = json.dumps(hash_data).encode("utf-8")
@@ -221,7 +222,12 @@ def generate_bib_data_hash(hash_data):
 
 
 def generate_scix_id(
-    hash_data, hash_data_type="bib_data", checksum=True, split=4, string_length=12
+    hash_data,
+    hash_data_type="bib_data",
+    checksum=True,
+    split=4,
+    string_length=12,
+    stripped_characters=True,
 ):
     if hash_data_type == "bib_data":
         if type(hash_data) != dict:
@@ -229,7 +235,7 @@ def generate_scix_id(
                 hash_data = json.loads(hash_data)
             except ValueError as e:
                 raise e
-        hashed_data = generate_bib_data_hash(hash_data)
+        hashed_data = generate_bib_data_hash(hash_data, stripped_characters=stripped_characters)
     elif hash_data_type == "other":
         encoded_hash_data = str(hash_data).encode("utf-8")
         hashed_data = hashlib.md5(encoded_hash_data).hexdigest()
