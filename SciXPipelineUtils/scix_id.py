@@ -179,7 +179,7 @@ def scix_id_from_hash(hash, checksum=True, split=4, string_length=12):
     return encode(rand_int)
 
 
-def generate_bib_data_hash(hash_data, strip_characters=True):
+def generate_bib_data_hash(hash_data, strip_characters=True, user_fields=None):
     unique_fields = [
         "id",
         "aff",
@@ -208,6 +208,10 @@ def generate_bib_data_hash(hash_data, strip_characters=True):
         "date",
         "copyright",
     ]
+
+    if user_fields:
+        unique_fields = user_fields
+
     for field in unique_fields:
         try:
             hash_data.pop(field)
@@ -234,6 +238,7 @@ def generate_scix_id(
     split=4,
     string_length=12,
     strip_characters=True,
+    user_fields=None,
 ):
     if hash_data_type == "bib_data":
         if type(hash_data) != dict:
@@ -241,7 +246,9 @@ def generate_scix_id(
                 hash_data = json.loads(hash_data)
             except ValueError as e:
                 raise e
-        hashed_data = generate_bib_data_hash(hash_data, strip_characters=strip_characters)
+        hashed_data = generate_bib_data_hash(
+            hash_data, strip_characters=strip_characters, user_fields=user_fields
+        )
     elif hash_data_type == "other":
         encoded_hash_data = str(hash_data).encode("utf-8")
         hashed_data = hashlib.md5(encoded_hash_data).hexdigest()
