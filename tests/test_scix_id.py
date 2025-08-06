@@ -71,19 +71,29 @@ class TestSciXIDImplementation(TestCase):
         self.assertEqual(scix_id, "7SNR-3N03-VSD6")
         self.assertEqual(scix_id, scix_id_2)
 
-    def test_generate_scix_id_special_characters(self):
+    def test_generate_scix_id_special_characters_true(self):
         test_bib_data = {
             "id": 1,
             "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
             "abs": ["words < <lt\\>"],
         }
-        # import pudb
-        # pudb.set_trace()
         scix_id = scixid.generate_scix_id(test_bib_data)
         scix_id_2 = scixid.generate_scix_id(json.dumps(test_bib_data))
         self.assertEqual(scix_id, "7SNR-3N03-VSD6")
         self.assertEqual(scix_id, scix_id_2)
+
+    def test_generate_scix_id_special_characters_false(self):
+        test_bib_data = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words < <lt\\>"],
+        }
+        scix_id = scixid.generate_scix_id(test_bib_data, strip_characters=False)
+        scix_id_2 = scixid.generate_scix_id(test_bib_data)
+        self.assertEqual(scix_id, "APGB-1BCS-SAG1")
+        self.assertNotEqual(scix_id, scix_id_2)
 
     def test_generate_scix_id_other(self):
         test_bib_data = {
