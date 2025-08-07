@@ -22,18 +22,18 @@ class TestSciXIDImplementation(TestCase):
             "id": 1,
             "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
-            "abs": "words",
+            "abs": ["words"],
             "bibcode": "Test",
         }
         hash = scixid.generate_bib_data_hash(test_bib_data)
-        self.assertEqual(hash, "ca77650a961fe043bf18e60618f43b49")
+        self.assertEqual(hash, "703f2f82ef742c10101840e4fc85bc53")
 
         test_bib_data = {
             "title": "Test",
-            "abs": "words",
+            "abs": ["words"],
         }
         hash2 = scixid.generate_bib_data_hash(test_bib_data)
-        self.assertEqual(hash2, "ca77650a961fe043bf18e60618f43b49")
+        self.assertEqual(hash2, "703f2f82ef742c10101840e4fc85bc53")
 
         self.assertEqual(hash, hash2)
 
@@ -42,42 +42,99 @@ class TestSciXIDImplementation(TestCase):
             "id": 1,
             "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
-            "abs": "words",
+            "abs": ["words"],
         }
         hash = scixid.generate_bib_data_hash(test_bib_data)
         rand_num = scixid.get_rand_from_hash(hash)
-        self.assertEqual(rand_num, 12446194448305896)
+        self.assertEqual(rand_num, 8784826954018605)
 
     def test_scix_id_from_hash(self):
         test_bib_data = {
             "id": 1,
             "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
-            "abs": "words",
+            "abs": ["words"],
         }
         hash = scixid.generate_bib_data_hash(test_bib_data)
         scix_id = scixid.scix_id_from_hash(hash)
-        self.assertEqual(scix_id, "B1QQ-XVEB-3Q83")
+        self.assertEqual(scix_id, "7SNR-3N03-VSD6")
 
     def test_generate_scix_id(self):
         test_bib_data = {
             "id": 1,
             "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
-            "abs": "words",
+            "abs": ["words"],
         }
         scix_id = scixid.generate_scix_id(test_bib_data)
         scix_id_2 = scixid.generate_scix_id(json.dumps(test_bib_data))
-        self.assertEqual(scix_id, "B1QQ-XVEB-3Q83")
+        self.assertEqual(scix_id, "7SNR-3N03-VSD6")
         self.assertEqual(scix_id, scix_id_2)
+
+    def test_generate_scix_id_user_fields(self):
+        test_bib_data = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words"],
+        }
+        user_fields = ["id"]
+        scix_id = scixid.generate_scix_id(test_bib_data, user_fields=user_fields)
+        scix_id_2 = scixid.generate_scix_id(test_bib_data)
+        self.assertEqual(scix_id, "1NMC-KCFG-RVH8")
+        self.assertNotEqual(scix_id, scix_id_2)
+
+    def test_generate_scix_id_special_characters_true(self):
+        test_bib_data = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words < <lt\\>"],
+        }
+        scix_id = scixid.generate_scix_id(test_bib_data)
+        scix_id_2 = scixid.generate_scix_id(json.dumps(test_bib_data))
+        self.assertEqual(scix_id, "7SNR-3N03-VSD6")
+        self.assertEqual(scix_id, scix_id_2)
+
+    def test_generate_scix_id_special_characters_true_comparison(self):
+        test_bib_data = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words < <lt\\>"],
+        }
+
+        test_bib_data_2 = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words <"],
+        }
+
+        scix_id = scixid.generate_scix_id(test_bib_data)
+        scix_id_2 = scixid.generate_scix_id(test_bib_data_2)
+        self.assertEqual(scix_id, "7SNR-3N03-VSD6")
+        self.assertEqual(scix_id, scix_id_2)
+
+    def test_generate_scix_id_special_characters_false(self):
+        test_bib_data = {
+            "id": 1,
+            "author": ["Lias, Alberta", "Smith, J."],
+            "title": "Test",
+            "abs": ["words < <lt\\>"],
+        }
+        scix_id = scixid.generate_scix_id(test_bib_data, strip_characters=False)
+        scix_id_2 = scixid.generate_scix_id(test_bib_data)
+        self.assertEqual(scix_id, "APGB-1BCS-SAG1")
+        self.assertNotEqual(scix_id, scix_id_2)
 
     def test_generate_scix_id_other(self):
         test_bib_data = {
             "id": 1,
             "author": ["Lias, Alberta", "Smith, J."],
             "title": "Test",
-            "abs": "words",
+            "abs": ["words"],
         }
         scix_id = scixid.generate_scix_id(json.dumps(test_bib_data), hash_data_type="other")
-        self.assertNotEqual(scix_id, "B1QQ-XVEB-3Q83")
-        self.assertEqual(scix_id, "9G4K-K9BH-SA63")
+        self.assertNotEqual(scix_id, "7SNR-3N03-VSD6")
+        self.assertEqual(scix_id, "6N22-EN04-7GHF")

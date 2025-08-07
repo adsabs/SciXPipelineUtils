@@ -179,7 +179,7 @@ def scix_id_from_hash(hash, checksum=True, split=4, string_length=12):
     return encode(rand_int)
 
 
-def generate_bib_data_hash(hash_data):
+def generate_bib_data_hash(hash_data, strip_characters=True, user_fields=None):
     unique_fields = [
         "id",
         "aff",
@@ -193,18 +193,52 @@ def generate_bib_data_hash(hash_data):
         "first_author",
         "first_author_norm",
         "identifier",
+        "orcid_pub",
+        "links_data",
+        "alternate_bibcode",
+        "doctype",
+        "doctype_facet_hier",
+        "entry_date",
+        "keyword_norm",
+        "keyword_facet",
+        "citation",
+        "citation_count",
+        "citation_count_norm",
+        "read_count",
+        "date",
+        "copyright",
     ]
+
+    if user_fields:
+        unique_fields = user_fields
+
     for field in unique_fields:
         try:
             hash_data.pop(field)
         except Exception:
             continue
+
+    if strip_characters and hash_data.get("abs"):
+        hash_data["abs"][0] = re.sub("<[^<]+?>", "", hash_data.get("abs")[0])
+        hash_data["abs"][0] = re.sub(r"\W+", "", hash_data.get("abs")[0])
+        hash_data["abs"][0] = re.sub(
+            r"&[a-zA-Z]+;", "", hash_data.get("abs")[0]
+        )  # Remove HTML entities
+        hash_data["abs"][0] = re.sub(
+            r"[^\x00-\x7F]", "", hash_data.get("abs")[0]
+        )  # Remove special Unicode characters like Greek and math
     encoded_hash_data = json.dumps(hash_data).encode("utf-8")
     return hashlib.md5(encoded_hash_data).hexdigest()
 
 
 def generate_scix_id(
-    hash_data, hash_data_type="bib_data", checksum=True, split=4, string_length=12
+    hash_data,
+    hash_data_type="bib_data",
+    checksum=True,
+    split=4,
+    string_length=12,
+    strip_characters=True,
+    user_fields=None,
 ):
     if hash_data_type == "bib_data":
         if type(hash_data) != dict:
@@ -212,7 +246,9 @@ def generate_scix_id(
                 hash_data = json.loads(hash_data)
             except ValueError as e:
                 raise e
-        hashed_data = generate_bib_data_hash(hash_data)
+        hashed_data = generate_bib_data_hash(
+            hash_data, strip_characters=strip_characters, user_fields=user_fields
+        )
     elif hash_data_type == "other":
         encoded_hash_data = str(hash_data).encode("utf-8")
         hashed_data = hashlib.md5(encoded_hash_data).hexdigest()
