@@ -243,7 +243,8 @@ def generate_scix_id(
     if hash_data_type == "bib_data":
         if type(hash_data) != dict:
             try:
-                hash_data = json.loads(hash_data)
+                hash_data_raw = json.loads(hash_data)
+                hash_data = json.dumps(hash_data_raw, sort_keys=True)
             except ValueError as e:
                 raise e
         hashed_data = generate_bib_data_hash(
