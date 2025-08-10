@@ -68,7 +68,7 @@ class TestSciXIDImplementation(TestCase):
         }
         scix_id = scixid.generate_scix_id(test_bib_data)
         scix_id_2 = scixid.generate_scix_id(json.dumps(test_bib_data))
-        self.assertEqual(scix_id, "7SNR-3N03-VSD6")
+        self.assertEqual(scix_id, "9153-JA78-G9SG")
         self.assertEqual(scix_id, scix_id_2)
 
     def test_generate_scix_id_user_fields(self):
@@ -81,7 +81,7 @@ class TestSciXIDImplementation(TestCase):
         user_fields = ["id"]
         scix_id = scixid.generate_scix_id(test_bib_data, user_fields=user_fields)
         scix_id_2 = scixid.generate_scix_id(test_bib_data)
-        self.assertEqual(scix_id, "1NMC-KCFG-RVH8")
+        self.assertEqual(scix_id, "3YG1-418S-68AF")
         self.assertNotEqual(scix_id, scix_id_2)
 
     def test_generate_scix_id_special_characters_true(self):
@@ -93,7 +93,7 @@ class TestSciXIDImplementation(TestCase):
         }
         scix_id = scixid.generate_scix_id(test_bib_data)
         scix_id_2 = scixid.generate_scix_id(json.dumps(test_bib_data))
-        self.assertEqual(scix_id, "7SNR-3N03-VSD6")
+        self.assertEqual(scix_id, "9153-JA78-G9SG")
         self.assertEqual(scix_id, scix_id_2)
 
     def test_generate_scix_id_special_characters_true_comparison(self):
@@ -113,7 +113,7 @@ class TestSciXIDImplementation(TestCase):
 
         scix_id = scixid.generate_scix_id(test_bib_data)
         scix_id_2 = scixid.generate_scix_id(test_bib_data_2)
-        self.assertEqual(scix_id, "7SNR-3N03-VSD6")
+        self.assertEqual(scix_id, "9153-JA78-G9SG")
         self.assertEqual(scix_id, scix_id_2)
 
     def test_generate_scix_id_special_characters_false(self):
@@ -125,7 +125,7 @@ class TestSciXIDImplementation(TestCase):
         }
         scix_id = scixid.generate_scix_id(test_bib_data, strip_characters=False)
         scix_id_2 = scixid.generate_scix_id(test_bib_data)
-        self.assertEqual(scix_id, "APGB-1BCS-SAG1")
+        self.assertEqual(scix_id, "8Z91-4S23-1KJX")
         self.assertNotEqual(scix_id, scix_id_2)
 
     def test_generate_scix_id_other(self):
@@ -136,5 +136,5 @@ class TestSciXIDImplementation(TestCase):
             "abs": ["words"],
         }
         scix_id = scixid.generate_scix_id(json.dumps(test_bib_data), hash_data_type="other")
-        self.assertNotEqual(scix_id, "7SNR-3N03-VSD6")
+        self.assertNotEqual(scix_id, "9153-JA78-G9SG")
         self.assertEqual(scix_id, "6N22-EN04-7GHF")
