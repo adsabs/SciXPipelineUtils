@@ -244,8 +244,12 @@ def generate_scix_id(
         if type(hash_data) != dict:
             try:
                 hash_data = json.loads(hash_data)
+
             except ValueError as e:
                 raise e
+
+        # Use json.dumps with sort_keys=True to sort all nested dictionary keys
+        hash_data = json.loads(json.dumps(hash_data, sort_keys=True))
         hashed_data = generate_bib_data_hash(
             hash_data, strip_characters=strip_characters, user_fields=user_fields
         )
