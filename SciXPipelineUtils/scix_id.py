@@ -210,13 +210,18 @@ def generate_bib_data_hash(hash_data, strip_characters=True, user_fields=None):
     ]
 
     if user_fields:
-        unique_fields = user_fields
-
-    for field in unique_fields:
-        try:
-            hash_data.pop(field)
-        except Exception:
-            continue
+      for key in hash_data.keys()
+          if field not in user_fields:
+            try:
+                hash_data.pop(field)
+            except Exception:
+                continue      
+    else:
+      for field in unique_fields:
+          try:
+              hash_data.pop(field)
+          except Exception:
+              continue
 
     if strip_characters and hash_data.get("abs"):
         hash_data["abs"][0] = re.sub("<[^<]+?>", "", hash_data.get("abs")[0])
