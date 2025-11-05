@@ -210,7 +210,7 @@ def generate_bib_data_hash(hash_data, strip_characters=True, user_fields=None):
     ]
 
     if user_fields:
-      for key in hash_data.keys():
+      for field in hash_data.keys():
           if field not in user_fields:
             try:
                 hash_data.pop(field)
