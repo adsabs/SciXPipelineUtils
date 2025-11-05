@@ -208,14 +208,16 @@ def generate_bib_data_hash(hash_data, strip_characters=True, user_fields=None):
         "date",
         "copyright",
     ]
+
     hash_data_fields = list(hash_data.keys())
+
     if user_fields:
         for field in hash_data_fields:
             if field not in user_fields:
-              try:
-                  hash_data.pop(field)
-              except Exception:
-                  continue      
+                try:
+                    hash_data.pop(field)
+                except Exception:
+                    continue
     else:
         for field in unique_fields:
             try:
