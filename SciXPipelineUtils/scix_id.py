@@ -187,6 +187,7 @@ def _remove_fields_from_hash_data(hash_data, fields_to_remove):
         except Exception:
             continue
 
+
 def _strip_characters(hash_data):
     """Strip HTML and special characters from all fields except DOI."""
     for key, value in hash_data.items():
@@ -207,6 +208,7 @@ def _strip_characters(hash_data):
             value = re.sub(r"&[a-zA-Z]+;", "", value)  # Remove HTML entities
             value = re.sub(r"[^\x00-\x7F]", "", value)  # Remove special Unicode characters
             hash_data[key] = value
+
 
 def generate_bib_data_hash(hash_data, strip_characters=True, user_fields=None):
     unique_fields = [
