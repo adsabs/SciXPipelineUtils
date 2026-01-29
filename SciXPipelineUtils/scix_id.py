@@ -187,19 +187,26 @@ def _remove_fields_from_hash_data(hash_data, fields_to_remove):
         except Exception:
             continue
 
+def _strip_characters(hash_data):
+    """Strip HTML and special characters from all fields except DOI."""
+    for key, value in hash_data.items():
+        if key == "doi":
+            continue
+        if isinstance(value, list):
+            for index, item in enumerate(value):
+                item = re.sub("<[^<]+?>", "", item)
+                item = re.sub(r"\W+", "", item)
+                item = re.sub(r"&[a-zA-Z]+;", "", item)  # Remove HTML entities
+                item = re.sub(r"[^\x00-\x7F]", "", item)  # Remove special Unicode characters
+                value[index] = item
+            hash_data[key] = value
 
-def _strip_abs_characters(hash_data):
-    """Strip HTML and special characters from abstract field."""
-    if not hash_data.get("abs"):
-        return
-
-    abs_text = hash_data["abs"][0]
-    abs_text = re.sub("<[^<]+?>", "", abs_text)
-    abs_text = re.sub(r"\W+", "", abs_text)
-    abs_text = re.sub(r"&[a-zA-Z]+;", "", abs_text)  # Remove HTML entities
-    abs_text = re.sub(r"[^\x00-\x7F]", "", abs_text)  # Remove special Unicode characters
-    hash_data["abs"][0] = abs_text
-
+        elif isinstance(value, str):
+            value = re.sub("<[^<]+?>", "", value)
+            value = re.sub(r"\W+", "", value)
+            value = re.sub(r"&[a-zA-Z]+;", "", value)  # Remove HTML entities
+            value = re.sub(r"[^\x00-\x7F]", "", value)  # Remove special Unicode characters
+            hash_data[key] = value
 
 def generate_bib_data_hash(hash_data, strip_characters=True, user_fields=None):
     unique_fields = [
@@ -245,7 +252,7 @@ def generate_bib_data_hash(hash_data, strip_characters=True, user_fields=None):
         _remove_fields_from_hash_data(hash_data, unique_fields)
 
     if strip_characters:
-        _strip_abs_characters(hash_data)
+        _strip_characters(hash_data)
 
     encoded_hash_data = json.dumps(hash_data).encode("utf-8")
     return hashlib.md5(encoded_hash_data).hexdigest()
