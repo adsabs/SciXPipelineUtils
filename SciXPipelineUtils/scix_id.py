@@ -191,7 +191,7 @@ def _remove_fields_from_hash_data(hash_data, fields_to_remove):
 def _strip_characters(hash_data):
     """Strip HTML and special characters from all fields except DOI."""
     for key, value in hash_data.items():
-        if key == "doi":
+        if key in ("doi", "doctype"):
             continue
         if isinstance(value, list):
             for index, item in enumerate(value):
